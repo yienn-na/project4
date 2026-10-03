@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\database;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+class logincontroller extends Controller
+{
+    public function index()
+    {
+        return view('login');
+    }
+
+    public function aksilogin(Request $request)
+    {
+        $username = $request->input('u');
+        $password = $request->input('p');
+
+        $jalur = new database;
+        $user = $jalur->pull('users', ['username' => $username]);
+
+        if ($user) {
+            // Cek password hash atau plain text
+            $isBcrypt = str_starts_with($user->password, '$2y$') || str_starts_with($user->password, '$2b$');
+            $passwordCocok = $isBcrypt 
+                ? Hash::check($password, $user->password) 
+                : ($password === $user->password);
+
+            if ($passwordCocok) {
+                session(['u' => $user->username]);
+                return redirect('/home');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Username atau password salah');
+    }
+
+    public function home(Request $request)
+    {
+        if (session()->has('u')) {
+            $jalur = new database;
+
+            $awal = $request->input('from');
+            $akhir = $request->input('to');
+
+            if ($awal && $akhir) {
+                $hello['hai'] = $jalur->tampilBetween('users', 'id', $awal, $akhir);
+            } else {
+                $hello['hai'] = $jalur->tampil('users');
+            }
+
+            return view('home', $hello);
+        } else {
+            return redirect('/');
+        }
+    }
+
+    public function logout()
+    {
+        session()->flush();
+        return redirect('/');
+    }
+
+    public function data()
+    {
+        return view('inputdata');
+    }
+
+    public function zano(Request $request)
+    {
+        // Validasi input termasuk konfirmasi password
+        $data = $request->validate([
+            'username' => 'required|unique:users,username', 
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|confirmed' // 'confirmed' akan otomatis mencocokkan input 'password_confirmation'
+        ]);
+
+        // Insert data user baru ke tabel users
+        DB::table('users')->insert([
+            'username' => $data['username'],
+            'email'    => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        // Simpan session dan alihkan ke dashboard home
+        session(['u' => $data['username']]);
+
+        return redirect('/home')->with('success', 'Data berhasil disimpan');
+    }
+
+    public function tampil()
+    {
+        return view('girasya');
+    }
+}
