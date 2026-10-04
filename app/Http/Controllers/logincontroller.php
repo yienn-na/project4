@@ -95,4 +95,4 @@ class logincontroller extends Controller
     {
         return view('girasya');
     }
-}
+} 
