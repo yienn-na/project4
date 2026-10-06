@@ -7,32 +7,29 @@
 <body>
     <h2>Silakan Login</h2>
 
-    <!-- Notifikasi Sukses / Error -->
     @if(session('success'))
-        <div style="color: green; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
-            {{ session('success') }}
-        </div>
+        <p>{{ session('success') }}</p>
     @endif
 
     @if(session('error'))
-        <div style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
-            {{ session('error') }}
-        </div>
+        <p>{{ session('error') }}</p>
     @endif
 
     <form action="/login" method="POST">
         @csrf
-        <div>
+        <p>
             <label>Username:</label><br>
             <input type="text" name="u" required>
-        </div>
-        <br>
-        <div>
+        </p>
+
+        <p>
             <label>Password:</label><br>
             <input type="password" name="p" required>
-        </div>
-        <br>
-        <button type="submit">Login</button>
+        </p>
+
+        <p>
+            <button type="submit">Login</button>
+        </p>
     </form>
 
     <p>Belum punya akun? <a href="/register">Daftar di sini</a></p>

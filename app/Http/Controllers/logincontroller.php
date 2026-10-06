@@ -73,7 +73,7 @@ class LoginController extends Controller
         $data = $request->validate([
             'username' => 'required|unique:users,username', 
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|confirmed' // Butuh input name="password_confirmation"
+            'password' => 'required|confirmed'
         ]);
 
         DB::table('users')->insert([
@@ -88,5 +88,37 @@ class LoginController extends Controller
     public function tampil()
     {
         return view('girasya');
+    }
+
+public function edit($id)
+    {
+        $jalur = new database;
+        $data['user'] = $jalur->pull('users', ['id' => $id]);
+        return view('edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'username' => 'required|unique:users,username,' . $id,
+            'email'    => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|confirmed'
+        ]);
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        DB::table('users')->where('id', $id)->update($data);
+
+        return redirect('/home')->with('success', 'Data berhasil diperbarui.');
+    }
+
+    public function hapus($id)
+    {
+        DB::table('users')->where('id', $id)->delete();
+        return redirect('/home')->with('success', 'Data berhasil dihapus.');
     }
 }

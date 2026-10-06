@@ -13,3 +13,7 @@ Route::get('/home', [LoginController::class, 'home']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/tampil', [LoginController::class, 'tampil']);
+
+Route::get('/edit/{id}', [LoginController::class, 'edit']);
+Route::put('/update/{id}', [LoginController::class, 'update']);
+Route::delete('/hapus/{id}', [LoginController::class, 'hapus']);

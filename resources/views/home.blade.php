@@ -15,6 +15,7 @@
                 <th>No</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $value->username }}</td>
                     <td>{{ $value->email }}</td>
+                  
                 </tr>
             @endforeach
         </tbody>

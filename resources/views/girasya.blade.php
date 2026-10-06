@@ -8,38 +8,38 @@
     <h2>Form Pendaftaran Akun</h2>
 
     @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     @endif
 
     <form action="/register" method="POST">
         @csrf
-        <div>
+        <p>
             <label>Username:</label><br>
             <input type="text" name="username" value="{{ old('username') }}" required>
-        </div>
-        <br>
-        <div>
+        </p>
+
+        <p>
             <label>Email:</label><br>
             <input type="email" name="email" value="{{ old('email') }}" required>
-        </div>
-        <br>
-        <div>
+        </p>
+
+        <p>
             <label>Password:</label><br>
             <input type="password" name="password" required>
-        </div>
-        <br>
-        <div>
+        </p>
+
+        <p>
             <label>Konfirmasi Password:</label><br>
             <input type="password" name="password_confirmation" required>
-        </div>
-        <br>
-        <button type="submit">Daftar</button>
+        </p>
+
+        <p>
+            <button type="submit">Daftar</button>
+        </p>
     </form>
 
     <p>Sudah punya akun? <a href="/">Login di sini</a></p>
