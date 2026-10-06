@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REGISTER</title>
+    <title>Form Registrasi</title>
 </head>
 <body>
-    <h1>Sign Up</h1>
+    <h2>Form Pendaftaran Akun</h2>
 
-    <!-- Menampilkan pesan error jika validasi gagal -->
     @if ($errors->any())
         <div style="color: red;">
             <ul>
@@ -19,30 +17,31 @@
         </div>
     @endif
 
-    <form action="/girasya" method="POST">
+    <form action="/register" method="POST">
         @csrf
-        <table>
-            <tr>
-                <td><label for="username">Username</label></td>
-                <td><input type="text" id="username" name="username" value="{{ old('username') }}" required></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email</label></td>
-                <td><input type="email" id="email" name="email" value="{{ old('email') }}" required></td>
-            </tr>
-            <tr>
-                <td><label for="password">Password</label></td>
-                <td><input type="password" id="password" name="password" required></td>
-            </tr>
-            <tr>
-                <td><label for="password_confirmation">Confirmation Password</label></td>
-                <td><input type="password" id="password_confirmation" name="password_confirmation" required></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><button type="submit">Daftar</button></td>
-            </tr>
-        </table>
+        <div>
+            <label>Username:</label><br>
+            <input type="text" name="username" value="{{ old('username') }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Email:</label><br>
+            <input type="email" name="email" value="{{ old('email') }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Password:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <br>
+        <div>
+            <label>Konfirmasi Password:</label><br>
+            <input type="password" name="password_confirmation" required>
+        </div>
+        <br>
+        <button type="submit">Daftar</button>
     </form>
+
+    <p>Sudah punya akun? <a href="/">Login di sini</a></p>
 </body>
 </html>

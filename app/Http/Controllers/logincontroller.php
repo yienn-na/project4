@@ -7,7 +7,7 @@ use App\Models\database;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class logincontroller extends Controller
+class LoginController extends Controller
 {
     public function index()
     {
@@ -23,7 +23,6 @@ class logincontroller extends Controller
         $user = $jalur->pull('users', ['username' => $username]);
 
         if ($user) {
-            // Cek password hash atau plain text
             $isBcrypt = str_starts_with($user->password, '$2y$') || str_starts_with($user->password, '$2b$');
             $passwordCocok = $isBcrypt 
                 ? Hash::check($password, $user->password) 
@@ -61,38 +60,33 @@ class logincontroller extends Controller
     public function logout()
     {
         session()->flush();
-        return redirect('/');
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 
     public function data()
     {
-        return view('inputdata');
+        return view('girasya');
     }
 
     public function zano(Request $request)
     {
-        // Validasi input termasuk konfirmasi password
         $data = $request->validate([
             'username' => 'required|unique:users,username', 
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|confirmed' // 'confirmed' akan otomatis mencocokkan input 'password_confirmation'
+            'password' => 'required|confirmed' // Butuh input name="password_confirmation"
         ]);
 
-        // Insert data user baru ke tabel users
         DB::table('users')->insert([
             'username' => $data['username'],
             'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
-        // Simpan session dan alihkan ke dashboard home
-        session(['u' => $data['username']]);
-
-        return redirect('/home')->with('success', 'Data berhasil disimpan');
+        return redirect('/')->with('success', 'Registrasi berhasil! Silakan login dengan akun baru Anda.');
     }
 
     public function tampil()
     {
         return view('girasya');
     }
-} 
+}

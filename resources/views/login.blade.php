@@ -1,24 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIN</title>
+    <title>Halaman Login</title>
 </head>
 <body>
-    <h2>LOGIN</h2>
-    <form method="POST" action="/login">
+    <h2>Silakan Login</h2>
+
+    <!-- Notifikasi Sukses / Error -->
+    @if(session('success'))
+        <div style="color: green; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <form action="/login" method="POST">
         @csrf
-        <label for="name">username:</label>
-        <input type="text" name="u" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" name="p"  required><br>
-
-
+        <div>
+            <label>Username:</label><br>
+            <input type="text" name="u" required>
+        </div>
+        <br>
+        <div>
+            <label>Password:</label><br>
+            <input type="password" name="p" required>
+        </div>
+        <br>
         <button type="submit">Login</button>
-        <button><a href="/girasya">register</a></button>
-
     </form>
+
+    <p>Belum punya akun? <a href="/register">Daftar di sini</a></p>
 </body>
 </html>
